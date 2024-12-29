@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "twxs.cmake",
+    "vadimcn.vscode-lldb",
+    "ms-vscode.cmake-tools",
+    "ms-azuretools.vscode-docker",
+    "llvm-vs-code-extensions.vscode-clangd"
+  ]
+}
