@@ -12,8 +12,8 @@ The goal is to make resource handling more efficient and versatile without requi
   <li><a href="#requeriments">Requeriments</a></li>
   <li><a href="#how-to-build">How to Build</a></li>
   <li><a href="#how-to-run-it">How to Run it</a></li>
-  <li><a href="#tested-with">Tested with</a></li>
   <li><a href="#useful-resources">Useful Resources</a></li>
+  <li><a href="#tested-with">Tested with</a></li>
 </ul>
 
 <h2>Features</h2>
