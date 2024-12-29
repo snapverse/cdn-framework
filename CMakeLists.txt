@@ -5,6 +5,7 @@ set(PACKAGE_BUGREPORT "https://github.com/snapverse/cdn-framework/issues")
 project(CdnFramework)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(functions_framework_cpp REQUIRED)
 find_package(Threads)

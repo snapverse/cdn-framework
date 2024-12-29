@@ -5,6 +5,7 @@
 
 namespace gcf = ::google::cloud::functions;
 
+namespace {
 auto hello_world_http() {
   return gcf::MakeFunction([](gcf::HttpRequest const& /*request*/) {
     std::string greeting = "Hello ";
@@ -17,9 +18,10 @@ auto hello_world_http() {
         .set_payload(greeting);
   });
 }
+}  // namespace
 
 int main(int argc, char* argv[]) {
   char* port = argv[2];
-  std::cout << "Listening on port " << port << "\n";
+  std::cout << "Listening at 127.0.0.1:" << port << "\n";
   return gcf::Run(argc, argv, hello_world_http());
 }
