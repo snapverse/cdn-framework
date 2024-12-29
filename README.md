@@ -11,7 +11,7 @@ The goal is to make resource handling more efficient and versatile without requi
   <li><a href=#features>Features</a>
     <ul>
       <li><a href=#1-cloud-integration>Cloud Integration</a></li>
-      <li><a href=#2-file-processing-options>Cloud Integration</a></li>
+      <li><a href=#2-file-processing-options>File Processing Options</a></li>
       <li><a href=#3-simple-usage>Simple Usage</a></li>
     </ul>
   </li>
