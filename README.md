@@ -8,55 +8,56 @@ The goal is to make resource handling more efficient and versatile without requi
 
 <h2>Table of Contents</h2>
 <ul>
-  <li><a href="#features">Features</a></li>
-  <li><a href="#requeriments">Requeriments</a></li>
-  <li><a href="#how-to-build">How to Build</a></li>
-  <li><a href="#how-to-run-it">How to Run it</a></li>
-  <li><a href="#useful-resources">Useful Resources</a></li>
-  <li><a href="#tested-with">Tested with</a></li>
+  <li><a href=#features>Features</a>
+    <ul>
+      <li><a href=#1-cloud-integration>Cloud Integration</a></li>
+      <li><a href=#2-file-processing-options>Cloud Integration</a></li>
+      <li><a href=#3-simple-usage>Simple Usage</a></li>
+    </ul>
+  </li>
+  <li><a href=#requeriments>Requeriments</a></li>
+  <li><a href=#how-to-build>How to Build</a></li>
+  <li><a href=#how-to-run-it>How to Run it</a></li>
+  <li><a href=#useful-resources>Useful Resources</a></li>
+  <li><a href=#tested-with>Tested with</a></li>
 </ul>
 
 <h2>Features</h2>
 
-<ol>
-  <li>
-    <b>Cloud Integration:</b>
+<h3 style=font-weight=bold>1. Cloud Integration:</h3>
+<ul>
+  <li>Supports retrieving files from multiple cloud storage services</li>
+</ul>
+
+<h3 style=font-weight=bold>2. File Processing Options:</h3>
+<ul>
+  <li><b>Images:</b>
     <ul>
-      <li>Supports retrieving files from multiple cloud storage services</li>
+      <li>Compression to reduce file size</li>
+      <li>Format conversion (e.g., PNG to JPEG)</li>
+      <li>Color filters (e.g., grayscale, sepia)</li>
     </ul>
   </li>
-    <li>
-    <b>File Processing Options:</b>
+    <li><b>Documents:</b>
     <ul>
-      <li><b>Images:</b>
-        <ul>
-          <li>Compression to reduce file size</li>
-          <li>Format conversion (e.g., PNG to JPEG)</li>
-          <li>Color filters (e.g., grayscale, sepia)</li>
-        </ul>
-      </li>
-        <li><b>Documents:</b>
-        <ul>
-          <li>Compression</li>
-          <li>Format conversion (e.g., PDF to DOCX)</li>
-        </ul>
-      </li>
+      <li>Compression</li>
+      <li>Format conversion (e.g., PDF to DOCX)</li>
     </ul>
   </li>
-    <li>
-    <b>Simple Usage:</b>
-    <ul>
-      <li>Access all functionality through a single endpoint</li>
-      <li>Customize processing through query parameters</li>
-    </ul>
-  </li>
-</ol>
+</ul>
+
+<h3 style=font-weight=bold>3. Simple Usage:</h3>
+<ul>
+  <li>Access all functionality through a single endpoint</li>
+  <li>Customize processing through query parameters</li>
+</ul>
+
 
 <h2>Requeriments</h2>
 <ul>
   <li><a href=https://en.cppreference.com/w/cpp/17>C++17</a></li>
   <li><a href=https://cmake.org/download/>CMake</a></li>
-  <li><a href=https://en.cppreference.com/w/cpp/compiler_support>Clang++ 18 or Alternative</a></li>
+  <li><a href=https://en.cppreference.com/w/cpp/compiler_support>Clang++19 or Alternative Compiler</a></li>
   <li><a href=https://learn.microsoft.com/en-us/vcpkg/get_started/get-started-vscode?pivots=shell-bash>vcpkg</a></li>
 </ul>
 
@@ -80,14 +81,14 @@ sh ./scripts/build
 <p>And for requests with a curl it's ok</p>
 
 ```shell
-curl 127.0.0.1:8080
+curl -X GET 127.0.0.1:8080
 ```
 
 <h2>Useful Resources</h2>
 <ul>
   <li><a href=https://learn.microsoft.com/en-us/vcpkg/get_started/overview>vcpkg Overview</a></li>
   <li><a href=https://cmake.org/cmake/help/latest/guide/tutorial/index.html>CMake Tutorials</a></li>
-  <li><a href=https://en.cppreference.com/w/>C++ Reference Tutorials</a></li>
+  <li><a href=https://en.cppreference.com/w/>C++ Reference</a></li>
   <li><a href=https://devdocs.io/cpp/>C++ DevDocs</a></li>
   <li><a href=https://cpp-core-guidelines-docs.vercel.app/>C++ Core Guidelines</a></li>
   <li><a href=https://google.github.io/styleguide/cppguide.html>Google C++ Style Guide</a></li>
