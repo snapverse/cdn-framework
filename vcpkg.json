@@ -1,5 +1,6 @@
 {
   "dependencies": [
-    "functions-framework-cpp"
+    "functions-framework-cpp",
+    "nlohmann-json"
   ]
 }

@@ -72,6 +72,6 @@ auto single_endpoint_http() {
 
 int main(int argc, char* argv[]) {
   char* port = argv[2];
-  std::cout << "Listening at 127.0.0.1:" << port << "\n";
+  std::cout << "Listening at http://127.0.0.1:" << port << "\n";
   return gcf::Run(argc, argv, single_endpoint_http());
 }

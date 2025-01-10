@@ -11,9 +11,10 @@ sudo rm -rf $ROOT_DIR/build/CMakeCache.txt
 mkdir -p $ROOT_DIR/build
 chmod -R u+w $ROOT_DIR/build
 
-cmake -S . -B build \
-  --preset=default \
+sudo cmake -S. \
+  -Bbuild \
   -GNinja \
+  --preset=default \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_C_COMPILER=$CLANG_BIN_PATH/clang \
   -DCMAKE_CXX_COMPILER=$CLANG_BIN_PATH/clang++ \
