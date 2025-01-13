@@ -11,12 +11,14 @@ sudo rm -rf $ROOT_DIR/build/CMakeCache.txt
 mkdir -p $ROOT_DIR/build
 chmod -R u+w $ROOT_DIR/build
 
+export CC=$CLANG_BIN_PATH/clang
+export CXX=$CLANG_BIN_PATH/clang++
+
 sudo cmake -S. \
   -Bbuild \
   -GNinja \
   --preset=default \
   -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_C_COMPILER=$CLANG_BIN_PATH/clang \
   -DCMAKE_CXX_COMPILER=$CLANG_BIN_PATH/clang++ \
   -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
 

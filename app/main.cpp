@@ -1,10 +1,55 @@
+#include <curl/curl.h>
 #include <google/cloud/functions/framework.h>
 
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
 
 namespace gcf = ::google::cloud::functions;
+
+namespace http {
+static size_t WriteCallback(void* contents, size_t size, size_t nmemb,
+                            std::string* out) {
+  size_t total_size = size * nmemb;
+  if (out) {
+    out->append(static_cast<char*>(contents), total_size);
+  }
+  return total_size;
+}
+
+static auto Request(const std::string& verb, const std::string& url) {
+  CURL* hnd;
+  CURLcode ret;
+  std::string res;
+
+  hnd = curl_easy_init();
+
+  curl_easy_setopt(hnd, CURLOPT_URL, url.data());
+  curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, verb.data());
+
+  curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, WriteCallback);
+  curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &res);
+
+  curl_easy_setopt(hnd, CURLOPT_USERAGENT, "curl/7.45.0");
+
+  curl_easy_setopt(hnd, CURLOPT_NOPROGRESS, 1L);
+  curl_easy_setopt(hnd, CURLOPT_TCP_KEEPALIVE, 1L);
+  curl_easy_setopt(hnd, CURLOPT_MAXREDIRS, 50L);
+
+  ret = curl_easy_perform(hnd);
+
+  curl_easy_cleanup(hnd);
+  hnd = nullptr;
+
+  if (ret != CURLE_OK) {
+    fprintf(stderr, "curl_easy_perform() failed: %s\n",
+            curl_easy_strerror(ret));
+  }
+
+  return nlohmann::json::parse(res);
+}
+};  // namespace http
 
 namespace {
 auto get_pathname(const std::string& target) {
@@ -21,7 +66,8 @@ std::unordered_map<std::string, std::string> get_query_params(
 
   std::size_t ampersand_sign_pos = query_params_string.find('&');
 
-  if (question_mark_pos != std::string::npos && ampersand_sign_pos == std::string::npos) {
+  if (question_mark_pos != std::string::npos &&
+      ampersand_sign_pos == std::string::npos) {
     ampersand_sign_pos = query_params_string.size() - 1;
   }
 
@@ -41,7 +87,7 @@ std::unordered_map<std::string, std::string> get_query_params(
   return query_params;
 }
 
-auto single_endpoint_http() {
+auto handler() {
   return gcf::MakeFunction([](gcf::HttpRequest const& request) {
     auto const& target = request.target();
     auto const& headers = request.headers();
@@ -51,7 +97,7 @@ auto single_endpoint_http() {
 
     std::cout << "Pathname" << "\n";
     std::cout << pathname << "\n\n";
-    
+
     std::cout << "Headers" << "\n";
     for (auto const& [key, value] : headers) {
       std::cout << key << " : " << value << "\n";
@@ -63,9 +109,12 @@ auto single_endpoint_http() {
       std::cout << key << " : " << value << "\n";
     }
 
+    auto comments =
+        http::Request("GET", "https://jsonplaceholder.typicode.com/comments");
+
     return gcf::HttpResponse{}
         .set_header("Content-Type", "text/plain")
-        .set_payload("Hello World!");
+        .set_payload(comments.dump(4));
   });
 }
 }  // namespace
@@ -73,5 +122,5 @@ auto single_endpoint_http() {
 int main(int argc, char* argv[]) {
   char* port = argv[2];
   std::cout << "Listening at http://127.0.0.1:" << port << "\n";
-  return gcf::Run(argc, argv, single_endpoint_http());
+  return gcf::Run(argc, argv, handler());
 }
