@@ -9,16 +9,13 @@
 namespace gcf = ::google::cloud::functions;
 
 namespace http {
-static size_t WriteCallback(void* contents, size_t size, size_t nmemb,
-                            std::string* out) {
-  size_t total_size = size * nmemb;
-  if (out) {
-    out->append(static_cast<char*>(contents), total_size);
-  }
-  return total_size;
-}
+namespace {
+auto WriteFunction(char* data, size_t size, size_t nmemb, void* userp) {
+  *static_cast<std::ostream*>(userp) << data;
+  return size * nmemb;
+};
 
-static auto Request(const std::string& verb, const std::string& url) {
+auto Request(const std::string& verb, const std::string& url) {
   CURL* hnd;
   CURLcode ret;
   std::string res;
@@ -28,7 +25,7 @@ static auto Request(const std::string& verb, const std::string& url) {
   curl_easy_setopt(hnd, CURLOPT_URL, url.data());
   curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, verb.data());
 
-  curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, WriteCallback);
+  curl_easy_setopt(hnd, CURLOPT_WRITEFUNCTION, WriteFunction);
   curl_easy_setopt(hnd, CURLOPT_WRITEDATA, &res);
 
   curl_easy_setopt(hnd, CURLOPT_USERAGENT, "curl/7.45.0");
@@ -49,16 +46,17 @@ static auto Request(const std::string& verb, const std::string& url) {
 
   return nlohmann::json::parse(res);
 }
-};  // namespace http
+}  // namespace
+}  // namespace http
 
+namespace util {
 namespace {
-auto get_pathname(const std::string& target) {
+std::string Pathname(const std::string& target) {
   auto question_mark_pos = target.find('?');
   const std::string pathname = target.substr(0, question_mark_pos);
   return pathname;
 }
-
-std::unordered_map<std::string, std::string> get_query_params(
+std::unordered_map<std::string, std::string> QueryParams(
     const std::string& target) {
   std::size_t question_mark_pos = target.find('?');
   std::string query_params_string = target.substr(question_mark_pos + 1);
@@ -86,14 +84,17 @@ std::unordered_map<std::string, std::string> get_query_params(
 
   return query_params;
 }
+}  // namespace
+}  // namespace util
 
-auto handler() {
+namespace {
+gcf::Function handler() {
   return gcf::MakeFunction([](gcf::HttpRequest const& request) {
     auto const& target = request.target();
     auto const& headers = request.headers();
 
-    std::string const& pathname = get_pathname(target);
-    auto const& query_params = get_query_params(target);
+    std::string const& pathname = util::Pathname(target);
+    auto const& query_params = util::QueryParams(target);
 
     std::cout << "Pathname" << "\n";
     std::cout << pathname << "\n\n";
